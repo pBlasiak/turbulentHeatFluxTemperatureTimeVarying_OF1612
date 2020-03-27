@@ -28,13 +28,15 @@ Group
     grpGenericBoundaryConditions
 
 Description
-    This boundary condition provides a uniform fixed gradient condition
-	that can change with time.
+    This boundary condition provides a uniform fixed heat flux condition
+	that can change with time. It is for incompressible fluids.
 
 Usage
     \table
         Property     | Description             | Required    | Default value
-        uniformGradient | uniform gradient     | yes         |
+        heatSource   | flux/power              | yes         |
+        q            | types of Function1      | yes         |
+        alphaEff     | name of alphaEff        | yes         |
     \endtable
 
     Example of the boundary condition specification:
@@ -42,7 +44,13 @@ Usage
     <patchName>
     {
         type            turbulentHeatFluxTemperatureTimeVarying;
-        uniformGradient constant 0.2;
+        heatSource		flux;
+        q               table
+		(
+			(0 0)
+			(5 10)
+		)
+        alphaEff        alphaEff;
     }
     \endverbatim
 
@@ -105,12 +113,11 @@ private:
         //- Heat source type
         heatSourceType heatSource_;
 
+        //- Heat power [W] or flux [W/m2]
+        autoPtr<Function1<scalar>> q_;
+
         //- Name of effective thermal diffusivity field
         word alphaEffName_;
-		
-        //- Heat power [W] or flux [W/m2]
-        //scalarField q_;
-        autoPtr<Function1<scalar>> q_;
 		
 
 public:
@@ -145,15 +152,6 @@ public:
             const DimensionedField<scalar, volMesh>&,
             const fvPatchFieldMapper&
         );
-
-        ////- Construct from patch and internal field and patch field
-        //turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
-        //(
-        //    const fvPatch&,
-        //    const DimensionedField<Type, volMesh>&,
-        //    const Field<Type>& fld
-        //);
-
 
         //- Construct as copy
         turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField

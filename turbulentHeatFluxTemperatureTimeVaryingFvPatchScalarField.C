@@ -77,13 +77,9 @@ turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
 :
     uniformFixedGradientFvPatchField<scalar>(p, iF),
     heatSource_(hsPower),
-    //q_(p.size(), 0.0),
-    alphaEffName_("undefinedAlphaEff"),
-	q_()
-{
-
-	Info<< "JESTEM3" << endl;
-}
+	q_(),
+    alphaEffName_("undefinedAlphaEff")
+{}
 
 turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
 (
@@ -94,37 +90,9 @@ turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemp
 :
     uniformFixedGradientFvPatchField<scalar>(p, iF),
     heatSource_(heatSourceTypeNames_.read(dict.lookup("heatSource"))),
-    alphaEffName_(dict.lookup("alphaEff")),
-    q_(Function1<scalar>::New("q", dict))
-{
-	Info<< "DDDDDDDDDD" << endl;
-    //this->evaluate();
-    //if (dict.found("value") && dict.found("gradient"))
-    //{
-    //    fvPatchField<scalar>::operator=(Field<scalar>("value", dict, p.size()));
-    //    gradient() = Field<scalar>("gradient", dict, p.size());
-    //}
-    //else
-    //{
-    //    fvPatchField<scalar>::operator=(patchInternalField());
-    //    gradient() = 0.0;
-    //}
-    const scalar t = this->db().time().timeOutputValue();
-	Info<< "q = " << q_->value(t) << endl;
-}
-
-//template<class Type>
-//Foam::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField<Type>::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
-//(
-//    const fvPatch& p,
-//    const DimensionedField<Type, volMesh>& iF,
-//    const Field<Type>& fld
-//)
-//:
-//    uniformFixedGradientFvPatchField<Type>(p, iF, fld)
-//{}
-
-
+    q_(Function1<scalar>::New("q", dict)),
+    alphaEffName_(dict.lookup("alphaEff"))
+{}
 
 
 turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
@@ -137,13 +105,9 @@ turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemp
 :
     uniformFixedGradientFvPatchField<scalar>(ptf, p, iF, mapper),
     heatSource_(ptf.heatSource_),
-    //q_(ptf.q_, mapper),
-    alphaEffName_(ptf.alphaEffName_),
-    q_(ptf.q_, false)
-{
-
-	Info<< "JESTEM2" << endl;
-}
+    q_(ptf.q_, false),
+    alphaEffName_(ptf.alphaEffName_)
+{}
 
 
 turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
@@ -153,13 +117,9 @@ turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemp
 :
     uniformFixedGradientFvPatchField<scalar>(ptf),
     heatSource_(ptf.heatSource_),
-    //q_(ptf.q_),
-    alphaEffName_(ptf.alphaEffName_),
-    q_(ptf.q_, false)
-{
-
-	Info<< "JESTEM1" << endl;
-}
+    q_(ptf.q_, false),
+    alphaEffName_(ptf.alphaEffName_)
+{}
 
 
 turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField
@@ -170,11 +130,9 @@ turbulentHeatFluxTemperatureTimeVaryingFvPatchScalarField::turbulentHeatFluxTemp
 :
     uniformFixedGradientFvPatchField<scalar>(ptf, iF),
     heatSource_(ptf.heatSource_),
-    //q_(ptf.q_),
-    alphaEffName_(ptf.alphaEffName_),
-    q_(ptf.q_, false)
+    q_(ptf.q_, false),
+    alphaEffName_(ptf.alphaEffName_)
 {
-	Info<< "JESTEM" << endl;
     // Evaluate the profile if defined
     if (ptf.q_.valid())
     {
